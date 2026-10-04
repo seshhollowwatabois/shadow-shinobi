@@ -311,5 +311,125 @@ function defend(){
 }
 load();home();
 </script>
-</body>
+
+<style>
+.arena{position:relative;overflow:hidden;border-radius:14px;border:1px solid #33435d;background:#08101b}
+#battleCanvas{display:block;width:100%;height:auto}
+.battleHud{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:600px){.battleHud{grid-template-columns:1fr}.actions{grid-template-columns:repeat(2,1fr)!important}}
+.combatActions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+@media(max-width:600px){.combatActions{grid-template-columns:repeat(2,1fr)}}
+</style>
+<script>
+(function(){
+let animFrame=0, battleScene=null;
+function stopAnimation(){if(animFrame)cancelAnimationFrame(animFrame);animFrame=0;battleScene=null}
+function battleUI(){
+ const e=state.enemy;
+ $("app").innerHTML=`
+ <div class="screen">
+  <div class="menu"><button class="btn" onclick="missions()">← Leave Battle</button></div>
+  <div class="arena"><canvas id="battleCanvas" width="1000" height="520"></canvas></div>
+  <div class="battleHud">
+   <div class="card"><b>🥷 ${state.name}</b><div>HP: ${state.hp}/${state.maxHp}</div><div class="hp"><i id="playerBar" style="width:${state.hp/state.maxHp*100}%"></i></div><div>Chakra: ${state.energy}/${state.maxEnergy}</div><div class="hp"><i id="energyBar" style="width:${state.energy/state.maxEnergy*100}%;background:#5ba7e7"></i></div></div>
+   <div class="card"><b>${e.emoji} ${e.name}</b><div>HP: <span id="enemyHp">${e.hp}</span>/${e.maxHp}</div><div class="hp"><i id="enemyBar" style="width:100%;background:#e75b68"></i></div></div>
+  </div>
+  <div class="combatActions">
+   <button class="btn primary" onclick="animatedAttack()">⚔️ Strike</button>
+   <button class="btn" onclick="animatedJutsu()">🔥 Fire Jutsu</button>
+   <button class="btn" onclick="animatedHeal()">💚 Recover</button>
+   <button class="btn" onclick="animatedDefend()">🛡️ Defend</button>
+  </div>
+  <div class="card" style="margin-top:10px"><b>Combat Log</b><div class="log" id="log"></div></div>
+ </div>`;
+ renderStats(); log("⚔️ Battle arena loaded — choose your move.");
+ startAnimation();
+}
+function startAnimation(){
+ stopAnimation();
+ const canvas=$("battleCanvas"); if(!canvas)return;
+ const ctx=canvas.getContext("2d");
+ battleScene={ctx,t:0,action:null,shake:0,particles:[]};
+ function frame(){
+  if(!battleScene)return;
+  battleScene.t+=0.016;
+  drawArena(ctx,canvas.width,canvas.height);
+  animFrame=requestAnimationFrame(frame);
+ }
+ frame();
+}
+function particle(x,y,color,count=24){
+ for(let i=0;i<count;i++)battleScene.particles.push({x,y,vx:(Math.random()-.5)*9,vy:(Math.random()-.65)*9,life:1,color});
+}
+function drawArena(ctx,w,h){
+ const s=battleScene, e=state.enemy;
+ let sx=s.shake>0?(Math.random()-.5)*s.shake:0; s.shake=Math.max(0,s.shake-.6);
+ ctx.save();ctx.translate(sx,0);
+ const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,"#172b49");g.addColorStop(.62,"#0a1422");g.addColorStop(1,"#07100d");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+ ctx.fillStyle="#10251a";ctx.fillRect(0,h*.72,w,h*.28);
+ for(let i=0;i<12;i++){let x=i*100+((s.t*8)%100);ctx.fillStyle="#0d2117";ctx.beginPath();ctx.moveTo(x,h*.72);ctx.lineTo(x+35,h*.40);ctx.lineTo(x+70,h*.72);ctx.fill();}
+ const bob=Math.sin(s.t*4)*3;
+ drawFighter(ctx,260,h*.70+bob,"#8fb6e8",false,s.action==="player");
+ drawFighter(ctx,740,h*.70-bob,e.color,true,s.action==="enemy");
+ if(s.action==="player"){ctx.strokeStyle="#dcecff";ctx.lineWidth=9;ctx.globalAlpha=.7;ctx.beginPath();ctx.moveTo(300,h*.48);ctx.lineTo(690,h*.55);ctx.stroke();ctx.globalAlpha=1}
+ if(s.action==="fire"){ctx.fillStyle="#ff8a32";ctx.beginPath();ctx.arc(470+(s.t%1)*220,h*.51,18+Math.sin(s.t*20)*5,0,Math.PI*2);ctx.fill();ctx.fillStyle="#ffd166";ctx.beginPath();ctx.arc(470+(s.t%1)*220,h*.51,9,0,Math.PI*2);ctx.fill()}
+ if(s.action==="hit"){ctx.strokeStyle="#fff";ctx.lineWidth=7;ctx.globalAlpha=.7;ctx.beginPath();ctx.arc(740,h*.52,35+Math.sin(s.t*35)*20,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=1}
+ for(const p of s.particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.life-=.025;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,6,6)}
+ s.particles=s.particles.filter(p=>p.life>0);ctx.restore();
+}
+function drawFighter(ctx,x,y,color,enemy,attacking){
+ ctx.save();ctx.translate(x,y);
+ const lean=attacking?(enemy?-0.25:0.25):0;ctx.rotate(lean);
+ ctx.fillStyle="#090d15";ctx.fillRect(-27,-110,54,85);
+ ctx.fillStyle=color;ctx.fillRect(-38,-25,76,68);
+ ctx.fillStyle="#d5a47c";ctx.beginPath();ctx.arc(0,-130,30,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#11151d";ctx.fillRect(-32,-142,64,20);
+ ctx.fillStyle="#fff";ctx.fillRect(enemy?-16:7,-136,7,4);ctx.fillRect(enemy?8:-14,-136,7,4);
+ ctx.strokeStyle=color;ctx.lineWidth=13;ctx.beginPath();ctx.moveTo(-32,0);ctx.lineTo(enemy?-82:82,-30);ctx.stroke();
+ ctx.strokeStyle="#161b25";ctx.lineWidth=10;ctx.beginPath();ctx.moveTo(-18,42);ctx.lineTo(-30,85);ctx.moveTo(18,42);ctx.lineTo(30,85);ctx.stroke();
+ ctx.restore();
+}
+function bars(){if(!$("playerBar"))return;$("playerBar").style.width=Math.max(0,state.hp/state.maxHp*100)+"%";$("energyBar").style.width=Math.max(0,state.energy/state.maxEnergy*100)+"%";$("enemyHp").textContent=state.enemy.hp;$("enemyBar").style.width=Math.max(0,state.enemy.hp/state.enemy.maxHp*100)+"%"}
+function actionLock(){return state.busy||!state.enemy}
+function finishPlayerMove(callback,type){
+ state.busy=true;battleScene.action=type;particle(type==="fire"?470:740,260,type==="fire"?"#ff9f43":"#eaf4ff",type==="fire"?34:20);
+ callback();bars();
+ if(state.enemy.hp<=0){battleScene.shake=16;log("💥 Finishing blow!");setTimeout(endAnimatedBattle,750);return}
+ setTimeout(function(){enemyAnimatedTurn()},700);
+}
+window.animatedAttack=function(){
+ if(actionLock())return;
+ finishPlayerMove(function(){const crit=Math.random()*100<state.crit;const dmg=(state.attack+Math.floor(Math.random()*7)+state.level)*(crit?2:1);state.enemy.hp=Math.max(0,state.enemy.hp-dmg);battleScene.shake=8;log((crit?"🎯 CRITICAL HIT! ":"")+"⚔️ You slash for "+dmg+" damage.");},"player");
+}
+window.animatedJutsu=function(){
+ if(actionLock()||state.energy<15){if(state.energy<15)log("🔵 Not enough chakra.");return}
+ finishPlayerMove(function(){state.energy-=15;const crit=Math.random()*100<state.crit;const dmg=(20+Math.floor(Math.random()*11)+state.level*2)*(crit?2:1);state.enemy.hp=Math.max(0,state.enemy.hp-dmg);battleScene.action="fire";battleScene.shake=10;log((crit?"🔥 CRITICAL JUTSU! ":"")+"🔥 Fireball hits for "+dmg+" damage.");},"fire");
+}
+window.animatedHeal=function(){
+ if(actionLock()||state.hp>=state.maxHp)return;
+ finishPlayerMove(function(){const n=15+state.level*2;state.hp=Math.min(state.maxHp,state.hp+n);particle(260,270,"#63e6a0",25);log("💚 Healing chakra restores "+n+" HP.");},"heal");
+}
+window.animatedDefend=function(){
+ if(actionLock())return;
+ finishPlayerMove(function(){state.defending=true;log("🛡️ You raise your guard.");},"guard");
+}
+function enemyAnimatedTurn(){
+ if(!state.enemy||state.enemy.hp<=0)return;
+ battleScene.action="enemy";particle(270,270,"#ff6b6b",18);battleScene.shake=7;
+ const reduced=Math.max(1,state.enemy.atk-state.defense);const dmg=state.defending?Math.max(1,Math.floor(reduced/2)):reduced;state.defending=false;
+ setTimeout(function(){state.hp=Math.max(0,state.hp-dmg);bars();log("💥 "+state.enemy.name+" attacks for "+dmg+" damage.");state.busy=false;battleScene.action=null;
+  if(state.hp<=0){log("☠️ You were defeated.");setTimeout(function(){state.hp=state.maxHp;state.energy=state.maxEnergy;save();stopAnimation();missions()},900)}else save();
+ },350);
+}
+function endAnimatedBattle(){
+ const e=state.enemy;gainXP(e.xp);state.coins+=e.coins;state.energy=Math.min(state.maxEnergy,state.energy+10);save();stopAnimation();
+ $("app").innerHTML='<div class="screen"><div class="card" style="text-align:center;padding:38px"><div style="font-size:80px">🏆</div><h2>MISSION COMPLETE!</h2><p class="reward">+'+e.xp+' XP · +'+e.coins+' coins</p><p>The enemy exploded into particles after your finishing move.</p><button class="btn primary" onclick="missions()">Continue</button></div></div>';renderStats();
+}
+window.startBattle=function(index){stopAnimation();state.enemy={...enemies[index]};state.busy=false;state.defending=false;battleUI()}
+window.missions=missions;
+window.home=home;
+window.profile=profile;
+stopAnimation();
+})();
+</script></body>
 </html>
