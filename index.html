@@ -663,7 +663,7 @@ stopAnimation();
             <div class="option-row">
               <button class="option-btn ${state.gender==="Male"?"selected":""}" onclick="creatorGender('Male')">MALE</button>
               <button class="option-btn ${state.gender==="Female"?"selected":""}" onclick="creatorGender('Female')">FEMALE</button>
-              <button class="option-btn" disabled>AGE: ADULT</button>
+              <button class="option-btn selected" type="button" id="ageAdultBtn" onclick="creatorAge('Adult')">ADULT</button><button class="option-btn" type="button" id="ageYoungBtn" onclick="creatorAge('Young')">YOUNG</button>
             </div>
           </div>
           <div class="creator-group">
@@ -829,5 +829,65 @@ button,.btn,.start-btn,.option-btn{
   document.querySelectorAll("button").forEach(function(b){b.type="button";});
 })();
 </script>
-</body>
+<script>
+/* === CHARACTER CREATOR FINAL FIX === */
+(function(){
+  let hairColor="#151515";
+  let age="Adult";
+
+  window.creatorAge=function(a){
+    age=a;
+    const adult=document.getElementById("ageAdultBtn");
+    const young=document.getElementById("ageYoungBtn");
+    if(adult)adult.classList.toggle("selected",a==="Adult");
+    if(young)young.classList.toggle("selected",a==="Young");
+    const n=document.getElementById("creatorNinja");
+    if(n)n.classList.toggle("young",a==="Young");
+  };
+
+  window.creatorHairColor=function(c){
+    hairColor=c;
+    state.creatorHairColor=c;
+    const n=document.getElementById("creatorNinja");
+    if(n)n.style.setProperty("--hair",c);
+    document.querySelectorAll(".creator-group").forEach(function(group){
+      if(group.querySelector(".option-btn[onclick*='creatorHairColor']")){
+        group.querySelectorAll(".option-btn").forEach(function(b){
+          b.classList.toggle("selected",b.getAttribute("onclick").includes(c));
+        });
+      }
+    });
+  };
+
+  window.finishCreator=function(){
+    const input=document.getElementById("creatorName");
+    if(input && input.value.trim())state.name=input.value.trim();
+    state.creatorHairColor=hairColor;
+    state.creatorAge=age;
+    save();
+    home();
+  };
+
+  const oldCreator=window.characterCreator;
+  if(oldCreator){
+    window.characterCreator=function(){
+      oldCreator();
+      const n=document.getElementById("creatorNinja");
+      if(n){
+        n.style.setProperty("--hair",hairColor);
+        n.classList.toggle("young",age==="Young");
+      }
+      const adult=document.getElementById("ageAdultBtn");
+      const young=document.getElementById("ageYoungBtn");
+      if(adult)adult.classList.toggle("selected",age==="Adult");
+      if(young)young.classList.toggle("selected",age==="Young");
+    };
+  }
+})();
+</script>
+<style>
+.preview-ninja.young .head{transform:scale(.88);transform-origin:center bottom}
+.preview-ninja.young .hair{transform:scale(.88);transform-origin:center bottom}
+.preview-ninja.young .body{height:132px}
+</style></body>
 </html>
