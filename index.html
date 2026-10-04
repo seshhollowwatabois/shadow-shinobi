@@ -104,22 +104,41 @@ function home(){
   state.enemy=null;state.busy=false;
   $("app").innerHTML=`
   <div class="screen">
+    <div class="village">
+      <div class="moon"></div><div class="mountain one"></div><div class="mountain two"></div>
+      <div class="village-title"><h2>HIDDEN SHADOW VILLAGE</h2><span>Welcome back, ${state.name}</span></div>
+      <div class="location loc-academy" onclick="profile()">📜 <span>Academy<small>Train</small></span></div>
+      <div class="location loc-shop" onclick="shop()">🏪 <span>Shop<small>Gear & items</small></span></div>
+      <div class="location loc-dojo" onclick="profile()">🥋 <span>Dojo<small>Character</small></span></div>
+      <div class="location loc-missions" onclick="missions()">⚔️ <span>Mission Board<small>Earn XP & coins</small></span></div>
+      <div class="village-character">${avatarEmoji()}</div>
+    </div>
+    <div class="hudrow">
+      <div class="meter">❤️ HP ${state.hp}/${state.maxHp}<i style="width:${state.hp/state.maxHp*100}%"></i></div>
+      <div class="meter">🔵 Chakra ${state.energy}/${state.maxEnergy}<i style="width:${state.energy/state.maxEnergy*100}%;background:#5ba7e7"></i></div>
+    </div>
+    <div class="quick">
+      <button class="btn primary" onclick="missions()">⚔️ Missions</button>
+      <button class="btn" onclick="profile()">🥷 Character</button>
+      <button class="btn" onclick="shop()">🏪 Shop</button>
+      <button class="btn" onclick="jutsuMenu()">🌀 Jutsu</button>
+    </div>
     <div class="menu">
       <button class="btn primary" onclick="home()">Village</button>
       <button class="btn" onclick="missions()">Missions</button>
-      <button class="btn" onclick="profile()">Profile</button>
-    </div>
-    <div class="hero">
-      <div class="card">
-        <h2>Welcome, ${state.name}.</h2>
-        <p>The village needs a shinobi. Complete missions, defeat enemies, earn coins and grow stronger.</p>
-        <button class="btn primary" onclick="missions()">Start a Mission ⚔️</button>
-      </div>
-      <div class="card">
-        <div class="avatar">${avatarEmoji()}</div><p style="text-align:center;margin-bottom:0"><b>${outfitName()}</b> · ${state.gender}</p>
-      </div>
+      <button class="btn" onclick="profile()">Character</button>
+      <button class="btn" onclick="shop()">Shop</button>
+      <button class="btn" onclick="jutsuMenu()">Jutsu</button>
     </div>
   </div>`;
+  renderStats();
+}
+function shop(){
+  $("app").innerHTML=`<div class="screen"><div class="card"><h2>🏪 Ninja Shop</h2><p>Equipment and items are coming next.</p><button class="btn primary" onclick="home()">Return to Village</button></div><div class="menu"><button class="btn" onclick="home()">Village</button><button class="btn" onclick="missions()">Missions</button><button class="btn" onclick="profile()">Character</button><button class="btn primary" onclick="shop()">Shop</button><button class="btn" onclick="jutsuMenu()">Jutsu</button></div></div>`;
+  renderStats();
+}
+function jutsuMenu(){
+  $("app").innerHTML=`<div class="screen"><div class="card"><h2>🌀 Jutsu</h2><div class="hero"><div class="card"><h3>🔥 Fire Style: Fireball</h3><p>Chakra: 15 · Power: 20+</p><button class="btn primary" onclick="missions()">Test in Battle</button></div><div class="card"><h3>⚡ Lightning Style</h3><p>Locked · Unlock at a higher level.</p></div></div></div><div class="menu"><button class="btn" onclick="home()">Village</button><button class="btn" onclick="missions()">Missions</button><button class="btn" onclick="profile()">Character</button><button class="btn" onclick="shop()">Shop</button><button class="btn primary" onclick="jutsuMenu()">Jutsu</button></div></div>`;
   renderStats();
 }
 function missions(){
