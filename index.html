@@ -37,6 +37,60 @@ h2,h3{margin-top:0}
 .input{width:100%;padding:12px;border-radius:10px;border:1px solid #344967;background:#0a101b;color:#fff;margin:8px 0 12px}
 .reward{color:#ffd166}
 </style>
+
+<style>
+/* === 2000s VINTAGE RPG UI === */
+:root{
+  --v-bg:#17120d;--v-panel:#241b13;--v-panel2:#302216;
+  --v-gold:#c79a4a;--v-gold2:#f0c86a;--v-line:#6d512d;
+  --v-text:#eadfc9;--v-muted:#a99a80;--v-red:#8f3f35;
+}
+html,body{background:#0c0907!important;color:var(--v-text)!important;font-family:Georgia,"Times New Roman",serif!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.08;background:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 4px);mix-blend-mode:overlay}
+#game{max-width:1180px;background:radial-gradient(circle at 50% 0,#3a2a19 0,#17110c 42%,#090706 100%)!important;padding:18px!important}
+header{padding:10px 14px 14px;border-bottom:2px solid #4e3a22;box-shadow:0 2px 0 #090705}
+header h1,.start-title{font-family:Georgia,"Times New Roman",serif!important;font-weight:900!important;letter-spacing:4px!important;text-shadow:2px 3px 0 #080604,0 0 14px #c08b3c66!important}
+.sub,.start-subtitle{color:#b7a17c!important;font-family:Georgia,"Times New Roman",serif!important}
+.stats{gap:6px}
+.pill{border:1px solid var(--v-line)!important;border-radius:3px!important;background:linear-gradient(#3b2b1b,#1e160f)!important;box-shadow:inset 0 1px #80643a,0 2px 0 #080604!important;color:#e6d3ae!important}
+.screen,.card{background:linear-gradient(145deg,#302317,#1d150f)!important;border:1px solid var(--v-line)!important;border-radius:4px!important;box-shadow:inset 0 1px #705635,0 5px 18px #0009!important}
+.screen{padding:14px!important}
+.card{padding:14px!important}
+h2,h3{font-family:Georgia,"Times New Roman",serif!important;color:#e8ca8d!important;text-shadow:1px 1px #080604}
+.btn,.start-btn{border:1px solid #72562f!important;border-radius:3px!important;background:linear-gradient(#4a3721,#241a10)!important;color:#ead7b2!important;font-family:Georgia,"Times New Roman",serif!important;text-shadow:1px 1px #080604;box-shadow:inset 0 1px #917348,0 2px 0 #080604!important}
+.btn:hover,.start-btn:hover{transform:translateY(-1px)!important;background:linear-gradient(#624823,#302014)!important;color:#ffe7a5!important}
+.btn:active,.start-btn:active{transform:translateY(1px)!important;box-shadow:inset 0 1px #090604!important}
+.btn.primary,.start-btn.new{background:linear-gradient(#9b6d32,#533518)!important;border-color:#c2934c!important;color:#fff0c5!important}
+.btn.danger{background:linear-gradient(#8c4034,#482019)!important}
+.input{background:#110c08!important;border:1px solid #6b4f2c!important;border-radius:3px!important;color:#f2dfbd!important}
+.log{background:#100b07!important;border:1px solid #4b3823;border-radius:3px!important;color:#cbb897}
+.hp{background:#100b07!important;border:1px solid #513b23;border-radius:2px!important}
+.hp>i{background:linear-gradient(90deg,#7e2e27,#c45b43)!important}
+.enemy .hp>i{background:linear-gradient(90deg,#6d241e,#a83e32)!important}
+.meter{background:linear-gradient(#392a1a,#21170f)!important;border:1px solid #66502e!important;border-radius:3px!important;color:#e4d1ac!important}
+.quick,.menu{border-color:#49351f}
+.village{border:2px solid #6d512d!important;box-shadow:inset 0 0 0 2px #181008,0 8px 25px #000!important;filter:saturate(.72) sepia(.22)}
+.village-title h2{font-family:Georgia,"Times New Roman",serif!important;color:#e7c987!important;text-shadow:2px 2px #090604}
+.location{border:1px solid #765932!important;background:linear-gradient(#3e2c1b,#20150d)!important;border-radius:3px!important;box-shadow:inset 0 1px #876b42,0 3px 0 #080604!important}
+.location:hover{background:linear-gradient(#584020,#2c1d10)!important}
+.village-character{filter:drop-shadow(3px 5px 2px #000)!important}
+#startScreen{font-family:Georgia,"Times New Roman",serif!important;background:#080604!important}
+.start-bg{background:linear-gradient(180deg,#182c35 0,#253c3b 38%,#161710 100%)!important;filter:sepia(.2) saturate(.72)}
+.start-panel{background:linear-gradient(145deg,#302318e8,#120c08f2)!important;border:2px solid #85663b!important;border-radius:5px!important;box-shadow:inset 0 0 0 2px #181008,0 12px 40px #000!important}
+.start-panel:before{content:"";position:absolute;inset:8px;border:1px solid #8d6b3c55;pointer-events:none}
+.start-btn{width:min(360px,90vw)!important;margin:7px auto!important;padding:14px 18px!important;font-size:16px!important;letter-spacing:2px}
+.start-save{color:#b9a27e!important}
+.start-title{color:#e8c77f!important;font-size:clamp(42px,9vw,82px)!important}
+.start-subtitle{letter-spacing:2px;text-transform:uppercase;font-size:12px!important}
+@media(max-width:600px){
+ #game{padding:8px!important}
+ header{padding:8px 6px 12px}
+ header h1{font-size:24px!important;letter-spacing:2px!important}
+ .stats{justify-content:flex-start}
+ .screen{padding:9px!important}
+ .btn{padding:10px 8px!important}
+}
+</style>
 </head>
 <body>
 
