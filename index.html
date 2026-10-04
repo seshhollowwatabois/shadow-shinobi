@@ -138,7 +138,50 @@ h2,h3{font-family:Georgia,"Times New Roman",serif!important;color:#e8ca8d!import
   .location{font-size:11px!important}
   .village-character{font-size:60px!important}
 }
-</style></head>
+</style>
+<style>
+/* === CHARACTER CREATION === */
+.creator-screen{max-width:980px;margin:auto}
+.creator-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:14px}
+.character-stage{min-height:430px;position:relative;overflow:hidden;border:2px solid #6d512d;background:radial-gradient(circle at 50% 35%,#59452b 0,#2a1d12 42%,#100b07 100%);box-shadow:inset 0 0 0 3px #160e08,0 6px 18px #000;display:flex;align-items:flex-end;justify-content:center}
+.character-stage:before{content:"";position:absolute;left:10%;right:10%;bottom:30px;height:55px;background:radial-gradient(ellipse,#080604 0,transparent 70%);opacity:.8}
+.creator-title{font-size:25px;color:#edcf91;text-align:center;margin:4px 0 2px;text-shadow:2px 2px #090604}
+.creator-sub{text-align:center;color:#ae9a78;font-size:12px;margin:0 0 12px}
+.preview-ninja{position:relative;width:190px;height:360px;z-index:2;filter:drop-shadow(8px 10px 4px #000)}
+.preview-ninja .legs{position:absolute;bottom:0;left:55px;width:80px;height:125px;background:#17120f;clip-path:polygon(15% 0,85% 0,72% 100%,55% 100%,50% 42%,45% 100%,28% 100%);border-bottom:8px solid #090705}
+.preview-ninja .body{position:absolute;bottom:105px;left:38px;width:114px;height:145px;background:var(--cloth,#25211d);border:5px solid #111;clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);box-shadow:inset 0 0 0 3px #514333}
+.preview-ninja .belt{position:absolute;bottom:158px;left:35px;width:120px;height:18px;background:#18120d;border:3px solid #8b6b3b;z-index:3}
+.preview-ninja .head{position:absolute;bottom:235px;left:49px;width:92px;height:95px;background:#c99570;border:4px solid #15100c;border-radius:45% 45% 42% 42%;z-index:4}
+.preview-ninja .hair{position:absolute;bottom:294px;left:43px;width:104px;height:68px;background:var(--hair,#151515);z-index:5;clip-path:polygon(4% 100%,0 42%,18% 8%,40% 25%,60% 0,80% 22%,100% 8%,96% 100%,76% 72%,52% 94%,28% 70%)}
+.preview-ninja .band{position:absolute;bottom:276px;left:44px;width:102px;height:23px;background:#171717;border:4px solid #0b0907;z-index:7}
+.preview-ninja .band:after{content:"✦";position:absolute;left:40px;top:-2px;color:#c9a25a;font-size:14px}
+.preview-ninja .face{position:absolute;bottom:248px;left:67px;width:58px;height:35px;z-index:8}
+.preview-ninja .face:before,.preview-ninja .face:after{content:"";position:absolute;top:10px;width:12px;height:6px;background:#f5f0df;box-shadow:0 0 0 2px #21170f}
+.preview-ninja .face:before{left:7px}.preview-ninja .face:after{right:7px}
+.preview-ninja .scarf{position:absolute;bottom:230px;left:49px;width:92px;height:30px;background:var(--scarf,#151515);border:3px solid #0c0907;z-index:6;clip-path:polygon(0 0,100% 0,82% 100%,55% 75%,20% 100%)}
+.preview-ninja .arm{position:absolute;bottom:135px;width:30px;height:125px;background:var(--cloth,#25211d);border:4px solid #111;z-index:2}
+.preview-ninja .arm.left{left:22px;transform:rotate(12deg)}.preview-ninja .arm.right{right:22px;transform:rotate(-12deg)}
+.preview-ninja.female .body{border-radius:25px 25px 8px 8px}
+.preview-ninja.female .head{border-radius:48% 48% 45% 45%}
+.preview-ninja.hair1 .hair{clip-path:polygon(0 100%,2% 30%,20% 0,44% 18%,68% 0,100% 28%,92% 100%,72% 60%,50% 92%,30% 60%)}
+.preview-ninja.hair2 .hair{clip-path:polygon(0 100%,0 38%,25% 8%,48% 28%,72% 0,100% 35%,94% 100%,70% 48%,50% 100%,28% 52%)}
+.creator-options{display:grid;gap:10px}
+.creator-group{border:1px solid #654a29;background:linear-gradient(#332419,#21170f);padding:11px;border-radius:3px}
+.creator-label{display:block;color:#d9bc80;font-weight:bold;font-size:13px;margin-bottom:7px}
+.option-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.option-btn{min-height:52px;padding:7px 4px;border:1px solid #664b29;border-radius:3px;background:linear-gradient(#49351f,#241910);color:#dfc89f;font-family:Georgia,serif;font-size:12px}
+.option-btn.selected{background:linear-gradient(#8f6630,#4e3017);border-color:#d0a45a;color:#fff0c8;box-shadow:inset 0 1px #e4c078}
+.option-btn .swatch{display:block;width:25px;height:10px;margin:0 auto 4px;border:1px solid #100b07}
+.creator-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+@media(max-width:700px){
+ .creator-grid{grid-template-columns:1fr}
+ .character-stage{min-height:390px}
+ .creator-options{grid-template-columns:1fr}
+ .preview-ninja{transform:scale(.9);transform-origin:bottom center}
+ .option-btn{min-height:48px}
+}
+</style>
+</head>
 <body>
 
 <div id="startScreen">
@@ -584,5 +627,107 @@ window.home=home;
 window.profile=profile;
 stopAnimation();
 })();
-</script></body>
+</script>
+<script>
+(function(){
+  const oldNewGame = window.newGame;
+  window.newGame = function(){
+    if(hasSave() && !confirm("Start a new shinobi? Your current save will be replaced.")) return;
+    localStorage.removeItem("shadowShinobi");
+    Object.assign(state,{name:"Shadow",gender:"Male",hair:0,outfit:0,level:1,xp:0,coins:100,hp:100,maxHp:100,energy:50,maxEnergy:50,attack:10,defense:3,agility:5,crit:5,enemy:null,busy:false});
+    save();
+    characterCreator();
+  };
+
+  window.characterCreator = function(){
+    $("game").classList.remove("start-hidden");
+    $("app").innerHTML = `
+    <div class="screen creator-screen">
+      <div class="creator-title">CREATE YOUR SHINOBI</div>
+      <div class="creator-sub">Choose your warrior before entering the Hidden Shadow Village.</div>
+      <div class="creator-grid">
+        <div class="character-stage">
+          <div class="preview-ninja" id="creatorNinja">
+            <div class="legs"></div><div class="body"></div><div class="belt"></div>
+            <div class="arm left"></div><div class="arm right"></div>
+            <div class="head"></div><div class="hair"></div><div class="band"></div><div class="face"></div><div class="scarf"></div>
+          </div>
+        </div>
+        <div class="creator-options">
+          <div class="creator-group">
+            <span class="creator-label">NAME</span>
+            <input class="input" id="creatorName" maxlength="20" value="${state.name}">
+          </div>
+          <div class="creator-group">
+            <span class="creator-label">BODY</span>
+            <div class="option-row">
+              <button class="option-btn ${state.gender==="Male"?"selected":""}" onclick="creatorGender('Male')">MALE</button>
+              <button class="option-btn ${state.gender==="Female"?"selected":""}" onclick="creatorGender('Female')">FEMALE</button>
+              <button class="option-btn" disabled>AGE: ADULT</button>
+            </div>
+          </div>
+          <div class="creator-group">
+            <span class="creator-label">HAIR STYLE</span>
+            <div class="option-row">
+              <button class="option-btn ${state.hair===0?"selected":""}" onclick="creatorHair(0)"><span class="swatch" style="background:#151515"></span>SPIKY</button>
+              <button class="option-btn ${state.hair===1?"selected":""}" onclick="creatorHair(1)"><span class="swatch" style="background:#151515"></span>LONG</button>
+              <button class="option-btn ${state.hair===2?"selected":""}" onclick="creatorHair(2)"><span class="swatch" style="background:#151515"></span>WILD</button>
+            </div>
+          </div>
+          <div class="creator-group">
+            <span class="creator-label">CLOTHING</span>
+            <div class="option-row">
+              <button class="option-btn ${state.outfit===0?"selected":""}" onclick="creatorOutfit(0)"><span class="swatch" style="background:#272727"></span>SHADOW</button>
+              <button class="option-btn ${state.outfit===1?"selected":""}" onclick="creatorOutfit(1)"><span class="swatch" style="background:#38543b"></span>FOREST</button>
+              <button class="option-btn ${state.outfit===2?"selected":""}" onclick="creatorOutfit(2)"><span class="swatch" style="background:#6e2722"></span>CRIMSON</button>
+            </div>
+          </div>
+          <div class="creator-group">
+            <span class="creator-label">HAIR COLOR</span>
+            <div class="option-row">
+              <button class="option-btn" onclick="creatorHairColor('#151515')">BLACK</button>
+              <button class="option-btn" onclick="creatorHairColor('#5b3824')">BROWN</button>
+              <button class="option-btn" onclick="creatorHairColor('#b5a15b')">ASH</button>
+            </div>
+          </div>
+          <div class="creator-actions">
+            <button class="btn" onclick="newGame()">Reset</button>
+            <button class="btn primary" onclick="finishCreator()">ENTER VILLAGE</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    renderCreator();
+  };
+
+  let creatorHairColorValue="#151515";
+  window.creatorGender=function(g){state.gender=g;renderCreator()};
+  window.creatorHair=function(h){state.hair=h;renderCreator()};
+  window.creatorOutfit=function(o){state.outfit=o;renderCreator()};
+  window.creatorHairColor=function(c){creatorHairColorValue=c;renderCreator()};
+  window.finishCreator=function(){
+    const n=$("creatorName").value.trim();
+    if(n) state.name=n;
+    state.creatorHairColor=creatorHairColorValue;
+    save();
+    home();
+  };
+  window.renderCreator=function(){
+    const n=$("creatorNinja"); if(!n)return;
+    n.className="preview-ninja "+(state.gender==="Female"?"female ":"")+"hair"+state.hair;
+    const outfit=[
+      {cloth:"#272727",scarf:"#151515"},
+      {cloth:"#38543b",scarf:"#18241a"},
+      {cloth:"#6e2722",scarf:"#35110f"}
+    ][state.outfit];
+    n.style.setProperty("--cloth",outfit.cloth);
+    n.style.setProperty("--scarf",outfit.scarf);
+    n.style.setProperty("--hair",creatorHairColorValue);
+    const name=$("creatorName"); if(name) name.value=state.name;
+    const stage=n.closest(".character-stage");
+    if(stage) stage.setAttribute("aria-label",state.name+" character preview");
+  };
+})();
+</script>
+</body>
 </html>
