@@ -39,7 +39,19 @@ h2,h3{margin-top:0}
 </style>
 </head>
 <body>
-<div id="game">
+
+<div id="startScreen">
+ <div class="start-bg"></div><div class="start-mountains"></div><div class="start-mist"></div><div class="start-fireflies"></div>
+ <div class="start-panel">
+  <h1 class="start-title">SHADOW<br>SHINOBI</h1>
+  <div class="start-subtitle">Enter the world of the shinobi</div>
+  <button class="start-btn new" onclick="newGame()">⚔️ NEW GAME</button>
+  <button class="start-btn" id="loadGameBtn" onclick="loadGame()">▶ LOAD GAME</button>
+  <button class="start-btn" onclick="continueAsGuest()">👤 QUICK START</button>
+  <div class="start-save" id="saveStatus"></div>
+ </div>
+</div>
+<div id="game" class="start-hidden">
 <header>
   <div>
     <h1>SHADOW SHINOBI</h1>
@@ -328,7 +340,28 @@ function heal(){
 function defend(){
   playerAction(()=>{log("🛡️ You brace for the next attack.");});
 }
-load();home();
+
+// Start menu
+function hasSave(){return !!localStorage.getItem("shadowShinobi")}
+function showGame(){const s=document.getElementById("startScreen");if(s)s.remove();$("game").classList.remove("start-hidden");home()}
+function newGame(){
+  if(hasSave()&&!confirm("Start a new shinobi? Your current save will be replaced."))return;
+  localStorage.removeItem("shadowShinobi");
+  Object.assign(state,{name:"Shadow",gender:"Male",hair:0,outfit:0,level:1,xp:0,coins:100,hp:100,maxHp:100,energy:50,maxEnergy:50,attack:10,defense:3,agility:5,crit:5,enemy:null,busy:false});
+  save();showGame();
+}
+function loadGame(){
+  if(!hasSave()){alert("No saved game found.");return}
+  load();showGame();
+}
+function continueAsGuest(){load();showGame()}
+function updateStartStatus(){
+  const b=document.getElementById("loadGameBtn"),s=document.getElementById("saveStatus");
+  if(hasSave()){b.style.display="block";s.textContent="Save found · Level "+(JSON.parse(localStorage.getItem("shadowShinobi")).level||1)}
+  else{b.style.display="block";b.style.opacity=".45";s.textContent="No save found yet"}
+}
+updateStartStatus();
+
 </script>
 
 <style>
