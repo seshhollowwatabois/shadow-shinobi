@@ -1411,5 +1411,65 @@ button,.btn,.start-btn,.option-btn{
   }
   setTimeout(install,0);
 })();
+</script><style id="aggressive-character-pass">
+/* === AGGRESSIVE SHADOW SHINOBI ART PASS === */
+.character-stage{
+  background:
+    radial-gradient(circle at 52% 25%,#76512d 0,#352216 34%,#120b07 68%,#060403 100%)!important;
+}
+.preview-ninja{width:275px!important;height:445px!important;filter:drop-shadow(0 20px 8px #000)!important}
+.preview-ninja .ss-art{transform:translateY(-4px) scale(1.03);transform-origin:125px 445px}
+.preview-ninja .ss-art .ss-hair{filter:drop-shadow(3px 4px 0 #080706)}
+.preview-ninja .ss-art .ss-eye{fill:#090807}
+.preview-ninja .ss-art .ss-highlight{fill:#fff}
+.preview-ninja .ss-art .ss-outline{stroke:#100c09;stroke-width:6}
+.preview-ninja .ss-art .ss-thin{stroke-width:3.5}
+.preview-ninja .ss-art .ss-skin{fill:#d0926e}
+.preview-ninja .ss-art .ss-cloth{fill:var(--cloth,#252525)}
+.preview-ninja .ss-art .ss-scarf{fill:var(--scarf,#111)}
+/* sharper jaw / cheek shadow */
+.preview-ninja .ss-art path[fill="url(#ssSkin)"]{filter:contrast(1.06)}
+/* aggressive eyebrows and sharper eyes */
+.preview-ninja .ss-art .ss-eye{filter:drop-shadow(0 1px 0 #000)}
+.preview-ninja .ss-art:after{
+  content:"";
+  position:absolute;left:0;right:0;top:0;bottom:0;
+  pointer-events:none;
+}
+/* cinematic red accent */
+.preview-ninja .ss-art .ss-metal{fill:#d0a75b}
+.preview-ninja.female .ss-art{transform:translateY(-4px) scale(1.03)}
+</style>
+<script id="aggressive-character-script">
+(function(){
+  function enhance(){
+    const n=document.getElementById("creatorNinja");
+    const svg=n&&n.querySelector(".ss-art");
+    if(!svg||svg.querySelector(".aggressive-details"))return;
+    const ns="http://www.w3.org/2000/svg";
+    const g=document.createElementNS(ns,"g");
+    g.setAttribute("class","aggressive-details");
+    g.innerHTML=`
+      <path d="M88 127 Q103 114 117 122 L112 128 Q101 123 90 132Z" fill="#17100c"/>
+      <path d="M133 122 Q147 114 162 127 L160 132 Q149 123 138 128Z" fill="#17100c"/>
+      <path d="M87 179 Q125 195 163 179 Q151 205 125 211 Q99 205 87 179Z" fill="#8d5b48" opacity=".34"/>
+      <path d="M69 232 L46 269 L66 258 L82 235Z" fill="#8b2430" opacity=".85"/>
+      <path d="M181 232 L204 269 L184 258 L168 235Z" fill="#8b2430" opacity=".85"/>
+      <path d="M73 302 Q125 317 177 302 L173 314 Q125 328 77 314Z" fill="#0a0807"/>
+      <path d="M80 315 L68 385" stroke="#0a0807" stroke-width="7" fill="none"/>
+      <path d="M170 315 L182 385" stroke="#0a0807" stroke-width="7" fill="none"/>
+    `;
+    svg.appendChild(g);
+  }
+  setTimeout(enhance,30);
+  const oldInstall=window.__ssInstallCharacterArt;
+  if(oldInstall){
+    window.__ssInstallCharacterArt=function(){oldInstall();setTimeout(enhance,0)}
+  }
+  const oldRender=window.renderCreator;
+  if(oldRender){
+    window.renderCreator=function(){oldRender();setTimeout(enhance,0)}
+  }
+})();
 </script></body>
 </html>
