@@ -57,9 +57,10 @@ h2,h3{margin-top:0}
 
 <script>
 const state={
-  name:"Shadow",
+  name:"Shadow", gender:"Male", hair:0, outfit:0,
   level:1,xp:0,coins:100,
   hp:100,maxHp:100,energy:50,maxEnergy:50,
+  attack:10,defense:3,agility:5,crit:5,
   enemy:null,busy:false
 };
 
@@ -87,13 +88,18 @@ function log(msg){
 function gainXP(n){
   state.xp+=n;
   while(state.xp>=state.level*100){
-    state.xp-=state.level*100;
-    state.level++;
-    state.maxHp+=15;state.maxEnergy+=5;
-    state.hp=state.maxHp;state.energy=state.maxEnergy;
+    state.xp-=state.level*100; state.level++;
+    state.maxHp+=15; state.maxEnergy+=5; state.attack+=2;
+    state.defense+=1; state.agility+=1; state.crit=Math.min(50,state.crit+1);
+    state.hp=state.maxHp; state.energy=state.maxEnergy;
     log("✨ Level up! You are now level "+state.level+"!");
   }
 }
+function avatarEmoji(){
+  const faces=state.gender==="Female"?["🥷🏻","👩🏻‍🎤","🧕🏻"]:["🥷🏻","🧑🏻‍🎤","👨🏻‍🦱"];
+  return faces[state.hair%faces.length];
+}
+function outfitName(){return ["Shadow Garb","Forest Garb","Crimson Garb"][state.outfit%3]}
 function home(){
   state.enemy=null;state.busy=false;
   $("app").innerHTML=`
@@ -110,7 +116,7 @@ function home(){
         <button class="btn primary" onclick="missions()">Start a Mission ⚔️</button>
       </div>
       <div class="card">
-        <div class="avatar">🥷</div>
+        <div class="avatar">${avatarEmoji()}</div><p style="text-align:center;margin-bottom:0"><b>${outfitName()}</b> · ${state.gender}</p>
       </div>
     </div>
   </div>`;
@@ -148,24 +154,56 @@ function missions(){
 function profile(){
   $("app").innerHTML=`
   <div class="screen">
-    <div class="menu"><button class="btn" onclick="home()">← Back</button></div>
-    <div class="card">
-      <h2>Shinobi Profile</h2>
-      <label>Name</label>
-      <input class="input" id="nameInput" maxlength="20" value="${state.name}">
-      <button class="btn primary" onclick="changeName()">Save Name</button>
-      <hr style="border-color:#26344b;margin:18px 0">
-      <p>Level: <b>${state.level}</b></p>
-      <p>Health: <b>${state.maxHp}</b></p>
-      <p>Energy: <b>${state.maxEnergy}</b></p>
+    <div class="menu">
+      <button class="btn" onclick="home()">Village</button>
+      <button class="btn" onclick="missions()">Missions</button>
+      <button class="btn primary" onclick="profile()">Profile</button>
+    </div>
+    <div class="hero">
+      <div class="card">
+        <h2>Shinobi Profile</h2>
+        <label>Name</label>
+        <input class="input" id="nameInput" maxlength="20" value="${state.name}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn ${state.gender==="Male"?"primary":""}" onclick="setGender('Male')">♂ Male</button>
+          <button class="btn ${state.gender==="Female"?"primary":""}" onclick="setGender('Female')">♀ Female</button>
+        </div>
+        <h3 style="margin-top:18px">Appearance</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <button class="btn" onclick="cycleHair()">Change Hair</button>
+          <button class="btn" onclick="cycleOutfit()">Change Outfit</button>
+        </div>
+        <button class="btn primary" style="width:100%;margin-top:10px" onclick="changeName()">Save Character</button>
+      </div>
+      <div class="card">
+        <div class="avatar" style="font-size:100px">${avatarEmoji()}</div>
+        <p style="text-align:center"><b>${outfitName()}</b></p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>⚔️ Shinobi Stats</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="pill">❤️ Health <b>${state.maxHp}</b></div>
+        <div class="pill">🔵 Chakra <b>${state.maxEnergy}</b></div>
+        <div class="pill">⚔️ Attack <b>${state.attack}</b></div>
+        <div class="pill">🛡️ Defense <b>${state.defense}</b></div>
+        <div class="pill">💨 Agility <b>${state.agility}</b></div>
+        <div class="pill">🎯 Critical <b>${state.crit}%</b></div>
+      </div>
+      <p class="sub" style="margin-top:14px">Level ${state.level} · ${state.xp}/${state.level*100} XP to next level</p>
       <button class="btn danger" onclick="resetGame()">Reset Progress</button>
     </div>
   </div>`;
+  renderStats();
 }
 function changeName(){
   const n=$("nameInput").value.trim();
-  if(n)state.name=n;save();profile();
+  if(n)state.name=n;
+  save();profile();
 }
+function setGender(g){state.gender=g;save();profile()}
+function cycleHair(){state.hair=(state.hair+1)%3;save();profile()}
+function cycleOutfit(){state.outfit=(state.outfit+1)%3;save();profile()}
 function resetGame(){
   if(confirm("Reset all progress?")){localStorage.removeItem("shadowShinobi");location.reload()}
 }
@@ -224,7 +262,8 @@ function endBattle(){
 }
 function enemyTurn(){
   if(!state.enemy||state.enemy.hp<=0)return;
-  const dmg=state.busy?Math.max(1,Math.floor(state.enemy.atk/2)):state.enemy.atk;
+  const reduced=Math.max(0,state.enemy.atk-state.defense);
+  const dmg=state.busy?Math.max(1,Math.floor(reduced/2)):Math.max(1,reduced);
   state.hp=Math.max(0,state.hp-dmg);
   log("💥 "+state.enemy.name+" dealt "+dmg+" damage.");
   state.busy=false;
@@ -241,7 +280,9 @@ function playerAction(fn){
 }
 function attack(){
   playerAction(()=>{
-    const dmg=10+Math.floor(Math.random()*7)+state.level;
+    const critical=Math.random()*100<state.crit;
+    const dmg=(state.attack+Math.floor(Math.random()*7)+state.level)*(critical?2:1);
+    log(critical?"🎯 CRITICAL HIT!":"");
     state.enemy.hp=Math.max(0,state.enemy.hp-dmg);
     log("⚔️ You struck for "+dmg+" damage.");
   });
@@ -250,7 +291,9 @@ function jutsu(){
   if(state.energy<15||state.busy)return;
   playerAction(()=>{
     state.energy-=15;
-    const dmg=20+Math.floor(Math.random()*11)+state.level*2;
+    const critical=Math.random()*100<state.crit;
+    const dmg=(20+Math.floor(Math.random()*11)+state.level*2)*(critical?2:1);
+    log(critical?"🎯 CRITICAL JUTSU!":"");
     state.enemy.hp=Math.max(0,state.enemy.hp-dmg);
     log("🌀 Fire Jutsu dealt "+dmg+" damage!");
   });
