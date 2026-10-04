@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Shadow Shinobi</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;background:#080b12;color:#f5f7fb}
+body{display:flex;justify-content:center}
+button{font:inherit;cursor:pointer}
+#game{width:min(1100px,100%);min-height:100vh;background:linear-gradient(180deg,#101827,#080b12);padding:20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}
+h1{margin:0;font-size:clamp(28px,6vw,48px);letter-spacing:2px}
+.sub{color:#8ea0b9;font-size:13px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{background:#151f30;border:1px solid #26344b;border-radius:999px;padding:8px 12px;font-size:13px}
+.screen{background:#0d1421;border:1px solid #26344b;border-radius:18px;padding:18px;box-shadow:0 14px 40px #0006}
+.hero{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}
+@media(max-width:700px){.hero{grid-template-columns:1fr}#game{padding:12px}}
+.card{background:#111a29;border:1px solid #27364d;border-radius:14px;padding:16px}
+h2,h3{margin-top:0}
+.avatar{height:240px;border-radius:14px;display:grid;place-items:center;background:radial-gradient(circle,#263b5d 0,#111a29 48%,#080b12 100%);font-size:100px}
+.hp{height:12px;background:#263044;border-radius:20px;overflow:hidden;margin:8px 0 14px}
+.hp>i{display:block;height:100%;background:#55d68a;width:100%;transition:.25s}
+.enemy .hp>i{background:#e75b68}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.btn{border:1px solid #344967;background:#18243a;color:#fff;border-radius:10px;padding:12px;transition:.15s}
+.btn:hover{transform:translateY(-1px);background:#21314d}
+.btn.primary{background:#315fa8;border-color:#4e83d2}
+.btn.danger{background:#702c39;border-color:#a94455}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.log{height:180px;overflow:auto;background:#080d16;border-radius:10px;padding:10px;font-size:14px;line-height:1.55}
+.log div{border-bottom:1px solid #182232;padding:5px 0}
+.menu{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.hidden{display:none!important}
+.input{width:100%;padding:12px;border-radius:10px;border:1px solid #344967;background:#0a101b;color:#fff;margin:8px 0 12px}
+.reward{color:#ffd166}
+</style>
+</head>
+<body>
+<div id="game">
+<header>
+  <div>
+    <h1>SHADOW SHINOBI</h1>
+    <div class="sub">A new ninja adventure begins.</div>
+  </div>
+  <div class="stats">
+    <div class="pill">Lv <b id="level">1</b></div>
+    <div class="pill">XP <b id="xp">0</b>/<b id="nextxp">100</b></div>
+    <div class="pill">🪙 <b id="coins">100</b></div>
+  </div>
+</header>
+
+<div id="app"></div>
+</div>
+
+<script>
+const state={
+  name:"Shadow",
+  level:1,xp:0,coins:100,
+  hp:100,maxHp:100,energy:50,maxEnergy:50,
+  enemy:null,busy:false
+};
+
+const enemies=[
+  {name:"Rogue Shinobi",emoji:"🥷",hp:70,maxHp:70,atk:8,xp:35,coins:25},
+  {name:"Forest Bandit",emoji:"👺",hp:90,maxHp:90,atk:11,xp:45,coins:32},
+  {name:"Shadow Beast",emoji:"🐺",hp:120,maxHp:120,atk:14,xp:65,coins:50}
+];
+
+function $(id){return document.getElementById(id)}
+function save(){localStorage.setItem("shadowShinobi",JSON.stringify(state))}
+function load(){
+  try{const s=JSON.parse(localStorage.getItem("shadowShinobi"));if(s)Object.assign(state,s)}catch(e){}
+}
+function renderStats(){
+  $("level").textContent=state.level;
+  $("xp").textContent=state.xp;
+  $("nextxp").textContent=state.level*100;
+  $("coins").textContent=state.coins;
+}
+function log(msg){
+  const box=$("log"); if(!box)return;
+  const d=document.createElement("div");d.textContent=msg;box.prepend(d);
+}
+function gainXP(n){
+  state.xp+=n;
+  while(state.xp>=state.level*100){
+    state.xp-=state.level*100;
+    state.level++;
+    state.maxHp+=15;state.maxEnergy+=5;
+    state.hp=state.maxHp;state.energy=state.maxEnergy;
+    log("✨ Level up! You are now level "+state.level+"!");
+  }
+}
+function home(){
+  state.enemy=null;state.busy=false;
+  $("app").innerHTML=`
+  <div class="screen">
+    <div class="menu">
+      <button class="btn primary" onclick="home()">Village</button>
+      <button class="btn" onclick="missions()">Missions</button>
+      <button class="btn" onclick="profile()">Profile</button>
+    </div>
+    <div class="hero">
+      <div class="card">
+        <h2>Welcome, ${state.name}.</h2>
+        <p>The village needs a shinobi. Complete missions, defeat enemies, earn coins and grow stronger.</p>
+        <button class="btn primary" onclick="missions()">Start a Mission ⚔️</button>
+      </div>
+      <div class="card">
+        <div class="avatar">🥷</div>
+      </div>
+    </div>
+  </div>`;
+  renderStats();
+}
+function missions(){
+  $("app").innerHTML=`
+  <div class="screen">
+    <div class="menu">
+      <button class="btn" onclick="home()">Village</button>
+      <button class="btn primary" onclick="missions()">Missions</button>
+      <button class="btn" onclick="profile()">Profile</button>
+    </div>
+    <h2>Mission Board</h2>
+    <div class="hero">
+      <div class="card">
+        <h3>🌲 Forest Patrol</h3><p>Difficulty: Easy</p>
+        <p>Defeat a rogue shinobi.</p>
+        <button class="btn primary" onclick="startBattle(0)">Accept Mission</button>
+      </div>
+      <div class="card">
+        <h3>👺 Bandit Hunt</h3><p>Difficulty: Medium</p>
+        <p>Clear the road of bandits.</p>
+        <button class="btn primary" onclick="startBattle(1)">Accept Mission</button>
+      </div>
+      <div class="card">
+        <h3>🐺 Shadow Hunt</h3><p>Difficulty: Hard</p>
+        <p>A dangerous beast has appeared.</p>
+        <button class="btn primary" onclick="startBattle(2)">Accept Mission</button>
+      </div>
+    </div>
+  </div>`;
+  renderStats();
+}
+function profile(){
+  $("app").innerHTML=`
+  <div class="screen">
+    <div class="menu"><button class="btn" onclick="home()">← Back</button></div>
+    <div class="card">
+      <h2>Shinobi Profile</h2>
+      <label>Name</label>
+      <input class="input" id="nameInput" maxlength="20" value="${state.name}">
+      <button class="btn primary" onclick="changeName()">Save Name</button>
+      <hr style="border-color:#26344b;margin:18px 0">
+      <p>Level: <b>${state.level}</b></p>
+      <p>Health: <b>${state.maxHp}</b></p>
+      <p>Energy: <b>${state.maxEnergy}</b></p>
+      <button class="btn danger" onclick="resetGame()">Reset Progress</button>
+    </div>
+  </div>`;
+}
+function changeName(){
+  const n=$("nameInput").value.trim();
+  if(n)state.name=n;save();profile();
+}
+function resetGame(){
+  if(confirm("Reset all progress?")){localStorage.removeItem("shadowShinobi");location.reload()}
+}
+function startBattle(index){
+  const e=enemies[index];
+  state.enemy={...e};
+  state.busy=false;
+  battle();
+}
+function battle(){
+  const e=state.enemy;
+  $("app").innerHTML=`
+  <div class="screen">
+    <div class="menu"><button class="btn" onclick="missions()">← Abandon Mission</button></div>
+    <div class="hero">
+      <div class="card">
+        <h2>${state.name}</h2>
+        <div>HP: ${state.hp}/${state.maxHp}</div>
+        <div class="hp"><i style="width:${state.hp/state.maxHp*100}%"></i></div>
+        <div>Energy: ${state.energy}/${state.maxEnergy}</div>
+        <div class="hp"><i style="background:#5ba7e7;width:${state.energy/state.maxEnergy*100}%"></i></div>
+        <div class="actions">
+          <button class="btn primary" onclick="attack()">⚔️ Strike</button>
+          <button class="btn" onclick="jutsu()">🌀 Fire Jutsu (15)</button>
+          <button class="btn" onclick="heal()">💚 Recover (10)</button>
+          <button class="btn" onclick="defend()">🛡️ Defend</button>
+        </div>
+      </div>
+      <div class="card enemy">
+        <h2>${e.emoji} ${e.name}</h2>
+        <div class="avatar" style="height:190px;font-size:80px">${e.emoji}</div>
+        <div>HP: ${e.hp}/${e.maxHp}</div>
+        <div class="hp"><i style="width:${Math.max(0,e.hp/e.maxHp*100)}%"></i></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>Battle Log</h3>
+      <div class="log" id="log"></div>
+    </div>
+  </div>`;
+  renderStats();
+  log("⚔️ Battle started against "+e.name+"!");
+}
+function endBattle(){
+  const e=state.enemy;
+  gainXP(e.xp);state.coins+=e.coins;state.energy=Math.min(state.maxEnergy,state.energy+10);
+  save();
+  $("app").innerHTML=`
+  <div class="screen"><div class="card" style="text-align:center">
+    <div style="font-size:70px">🏆</div>
+    <h2>Mission Complete!</h2>
+    <p class="reward">+ ${e.xp} XP &nbsp; + ${e.coins} coins</p>
+    <button class="btn primary" onclick="missions()">Continue</button>
+  </div></div>`;
+  renderStats();
+}
+function enemyTurn(){
+  if(!state.enemy||state.enemy.hp<=0)return;
+  const dmg=state.busy?Math.max(1,Math.floor(state.enemy.atk/2)):state.enemy.atk;
+  state.hp=Math.max(0,state.hp-dmg);
+  log("💥 "+state.enemy.name+" dealt "+dmg+" damage.");
+  state.busy=false;
+  if(state.hp<=0){
+    log("☠️ You were defeated...");
+    setTimeout(()=>{state.hp=state.maxHp;state.energy=state.maxEnergy;save();missions()},700);
+  }else{save();battle()}
+}
+function playerAction(fn){
+  if(state.busy||!state.enemy)return;
+  state.busy=true;fn();
+  if(state.enemy.hp<=0){save();setTimeout(endBattle,350);return}
+  setTimeout(enemyTurn,500);
+}
+function attack(){
+  playerAction(()=>{
+    const dmg=10+Math.floor(Math.random()*7)+state.level;
+    state.enemy.hp=Math.max(0,state.enemy.hp-dmg);
+    log("⚔️ You struck for "+dmg+" damage.");
+  });
+}
+function jutsu(){
+  if(state.energy<15||state.busy)return;
+  playerAction(()=>{
+    state.energy-=15;
+    const dmg=20+Math.floor(Math.random()*11)+state.level*2;
+    state.enemy.hp=Math.max(0,state.enemy.hp-dmg);
+    log("🌀 Fire Jutsu dealt "+dmg+" damage!");
+  });
+}
+function heal(){
+  if(state.busy||state.hp>=state.maxHp)return;
+  playerAction(()=>{
+    const amount=15+state.level*2;
+    state.hp=Math.min(state.maxHp,state.hp+amount);
+    log("💚 You recovered "+amount+" HP.");
+  });
+}
+function defend(){
+  playerAction(()=>{log("🛡️ You brace for the next attack.");});
+}
+load();home();
+</script>
+</body>
+</html>
