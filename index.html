@@ -751,5 +751,83 @@ stopAnimation();
     };
   }
 })();
-</script></body>
+</script>
+<style>
+/* === FINAL MOBILE / SAME-PAGE FIX === */
+html{
+  touch-action:manipulation;
+  -webkit-text-size-adjust:100%;
+}
+body{
+  touch-action:manipulation;
+  overscroll-behavior-x:none;
+}
+button,.btn,.start-btn,.option-btn{
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+#startScreen.game-closed{display:none!important}
+#game.start-hidden{display:none!important}
+@media(max-width:700px){
+  html,body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden!important;
+    touch-action:manipulation;
+  }
+  #game{width:100%!important;max-width:100%!important}
+  input,select,textarea{font-size:16px!important}
+}
+</style>
+<script>
+(function(){
+  /* Prevent iPhone/iPad browser pinch and gesture zoom while keeping normal scrolling. */
+  document.addEventListener("gesturestart",function(e){e.preventDefault();},{passive:false});
+  document.addEventListener("gesturechange",function(e){e.preventDefault();},{passive:false});
+  document.addEventListener("gestureend",function(e){e.preventDefault();},{passive:false});
+  document.addEventListener("touchmove",function(e){
+    if(e.touches && e.touches.length>1)e.preventDefault();
+  },{passive:false});
+
+  /* Keep the start menu and the game inside this one HTML document. */
+  window.showGame=function(){
+    const start=document.getElementById("startScreen");
+    if(start)start.classList.add("game-closed");
+    const game=document.getElementById("game");
+    if(game)game.classList.remove("start-hidden");
+    home();
+  };
+
+  window.newGame=function(){
+    if(hasSave() && !confirm("Start a new shinobi? Your current save will be replaced."))return;
+    localStorage.removeItem("shadowShinobi");
+    Object.assign(state,{
+      name:"Shadow",gender:"Male",hair:0,outfit:0,level:1,xp:0,coins:100,
+      hp:100,maxHp:100,energy:50,maxEnergy:50,attack:10,defense:3,
+      agility:5,crit:5,enemy:null,busy:false,defending:false
+    });
+    save();
+    const start=document.getElementById("startScreen");
+    if(start)start.classList.add("game-closed");
+    const game=document.getElementById("game");
+    if(game)game.classList.remove("start-hidden");
+    characterCreator();
+  };
+
+  window.loadGame=function(){
+    if(!hasSave()){alert("No saved game found.");return;}
+    load();
+    showGame();
+  };
+
+  window.continueAsGuest=function(){
+    load();
+    showGame();
+  };
+
+  /* These are real buttons, not links: never allow a tap to submit/navigate. */
+  document.querySelectorAll("button").forEach(function(b){b.type="button";});
+})();
+</script>
+</body>
 </html>
