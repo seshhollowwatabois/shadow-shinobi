@@ -1289,5 +1289,127 @@ button,.btn,.start-btn,.option-btn{
 .preview-ninja.young .head{transform:scale(.88);transform-origin:center bottom}
 .preview-ninja.young .hair{transform:scale(.88);transform-origin:center bottom}
 .preview-ninja.young .body{height:132px}
-</style></body>
+</style><style id="proper-vector-character-art">
+/* === PROPER SHADOW SHINOBI CHARACTER ART === */
+.preview-ninja{
+  width:250px!important;height:430px!important;
+  position:relative!important;filter:drop-shadow(0 18px 7px #000)!important;
+  transform:none!important;
+}
+.preview-ninja .ss-art{width:100%;height:100%;display:block;overflow:visible}
+.preview-ninja .ss-outline{stroke:#17110d;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.preview-ninja .ss-thin{stroke:#17110d;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.preview-ninja .ss-eye{fill:#17110d}
+.preview-ninja .ss-highlight{fill:#fff7e8}
+.preview-ninja .ss-shadow{fill:#9b634e}
+.preview-ninja .ss-skin{fill:#d79b76}
+.preview-ninja .ss-hair{fill:var(--hair,#151515)}
+.preview-ninja .ss-cloth{fill:var(--cloth,#272727)}
+.preview-ninja .ss-scarf{fill:var(--scarf,#151515)}
+.preview-ninja .ss-metal{fill:#d2ad62}
+.preview-ninja .ss-art .female-extra{display:none}
+.preview-ninja.female .ss-art .female-extra{display:block}
+.preview-ninja.young .ss-art{transform:scale(.92);transform-origin:125px 430px}
+</style>
+<script id="proper-vector-character-script">
+(function(){
+  function artSVG(){
+    return `
+<svg class="ss-art" viewBox="0 0 250 430" aria-hidden="true">
+  <defs>
+    <linearGradient id="ssCloth" x1="0" x2="1"><stop offset="0" stop-color="#111"/><stop offset=".22" stop-color="var(--cloth,#272727)"/><stop offset=".72" stop-color="var(--cloth,#272727)"/><stop offset="1" stop-color="#0c0a08"/></linearGradient>
+    <linearGradient id="ssSkin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efbb91"/><stop offset=".65" stop-color="var(--skin,#d79b76)"/><stop offset="1" stop-color="#9b634e"/></linearGradient>
+    <linearGradient id="ssHair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#303030"/><stop offset=".28" stop-color="var(--hair,#151515)"/><stop offset="1" stop-color="#080808"/></linearGradient>
+  </defs>
+
+  <!-- back leg silhouette -->
+  <path class="ss-outline" fill="url(#ssCloth)" d="M82 315 L116 315 L112 384 L95 422 L67 422 L83 377 Z"/>
+  <path class="ss-outline" fill="url(#ssCloth)" d="M134 315 L168 315 L177 377 L193 422 L165 422 L145 384 Z"/>
+  <path fill="#090806" d="M67 414 Q84 404 102 415 L107 429 L61 429Z"/>
+  <path fill="#090806" d="M157 414 Q175 404 194 416 L199 429 L153 429Z"/>
+  <path class="ss-thin" fill="none" stroke="#6f604c" d="M80 333 L106 333 M145 333 L171 333"/>
+
+  <!-- torso -->
+  <path class="ss-outline" fill="url(#ssCloth)" d="M76 205 Q125 188 174 205 L188 318 Q160 337 125 334 Q90 337 62 318Z"/>
+  <path class="ss-thin" fill="#111" d="M105 208 L125 260 L145 208Z"/>
+  <path class="ss-thin" fill="#473a2c" d="M125 260 L125 319"/>
+  <path class="ss-outline" fill="#17120d" d="M64 292 Q125 304 186 292 L184 315 Q125 328 66 315Z"/>
+  <path class="ss-outline" fill="var(--scarf,#151515)" d="M91 202 Q125 220 159 202 L168 229 Q125 245 82 229Z"/>
+  <path class="ss-outline" fill="#17110c" d="M113 293 L137 293 L137 313 L113 313Z"/>
+  <path class="ss-metal" d="M119 297 L125 291 L131 297 L125 303Z"/>
+
+  <!-- left arm -->
+  <path class="ss-outline" fill="url(#ssCloth)" d="M72 211 Q52 215 42 239 L27 298 Q28 311 39 314 Q49 313 55 300 L78 252Z"/>
+  <path class="ss-outline" fill="url(#ssSkin)" d="M27 294 Q17 297 17 308 Q18 320 29 322 Q40 320 41 310 L38 299Z"/>
+  <path class="ss-thin" fill="none" stroke="#6f604c" d="M44 271 L61 278 M38 284 L56 291"/>
+
+  <!-- right arm -->
+  <path class="ss-outline" fill="url(#ssCloth)" d="M178 211 Q198 215 208 239 L223 298 Q222 311 211 314 Q201 313 195 300 L172 252Z"/>
+  <path class="ss-outline" fill="url(#ssSkin)" d="M223 294 Q233 297 233 308 Q232 320 221 322 Q210 320 209 310 L212 299Z"/>
+  <path class="ss-thin" fill="none" stroke="#6f604c" d="M206 271 L189 278 M212 284 L194 291"/>
+
+  <!-- neck -->
+  <path class="ss-outline" fill="url(#ssSkin)" d="M105 187 L145 187 L148 211 Q125 225 102 211Z"/>
+
+  <!-- face -->
+  <path class="ss-outline" fill="url(#ssSkin)" d="M76 104 Q78 49 125 45 Q172 49 174 104 L166 170 Q151 199 125 204 Q99 199 84 170Z"/>
+  <!-- ears -->
+  <path class="ss-outline" fill="url(#ssSkin)" d="M78 112 Q61 105 63 124 Q65 143 82 140Z"/>
+  <path class="ss-outline" fill="url(#ssSkin)" d="M172 112 Q189 105 187 124 Q185 143 168 140Z"/>
+
+  <!-- hair mass + spikes -->
+  <path class="ss-outline" fill="url(#ssHair)" d="M72 117 L65 91 L78 85 L66 67 L91 73 L87 48 L109 62 L125 35 L139 61 L164 46 L159 70 L184 64 L172 87 L190 91 L177 119 L166 106 L157 122 L145 103 L132 124 L119 101 L103 122 L91 103 Z"/>
+  <path fill="#ffffff22" d="M92 73 Q108 50 126 48 Q112 67 104 91Z"/>
+  <path fill="#ffffff12" d="M137 62 Q154 51 164 55 Q151 70 144 86Z"/>
+
+  <!-- forehead protector -->
+  <path class="ss-outline" fill="#171717" d="M68 91 Q125 78 182 91 L179 117 Q125 105 71 117Z"/>
+  <path class="ss-thin" fill="#d2ad62" d="M110 88 L140 88 L140 108 L110 108Z"/>
+  <path class="ss-metal" d="M117 92 L133 92 L133 104 L117 104Z"/>
+  <path fill="#171717" d="M121 94 L129 94 L125 102Z"/>
+
+  <!-- anime eyes -->
+  <path class="ss-outline" fill="#fff8ea" d="M88 132 Q101 120 116 132 Q104 150 89 139Z"/>
+  <path class="ss-outline" fill="#fff8ea" d="M134 132 Q149 120 162 132 L161 139 Q146 150 134 132Z"/>
+  <ellipse class="ss-eye" cx="104" cy="136" rx="6" ry="8"/><ellipse class="ss-eye" cx="146" cy="136" rx="6" ry="8"/>
+  <circle class="ss-highlight" cx="106" cy="133" r="2"/><circle class="ss-highlight" cx="148" cy="133" r="2"/>
+  <path class="ss-thin" fill="none" d="M88 125 Q102 116 116 124 M134 124 Q148 116 162 125"/>
+  <path class="ss-thin" fill="none" d="M122 153 Q125 156 128 153"/>
+  <path class="ss-thin" fill="none" d="M111 171 Q125 179 139 171"/>
+
+  <!-- scarf tails -->
+  <path class="ss-outline" fill="url(#ssCloth)" d="M82 208 L58 254 L84 241 L103 214Z"/>
+  <path class="ss-outline" fill="url(#ssCloth)" d="M168 208 L192 254 L166 241 L147 214Z"/>
+
+  <!-- outfit seams -->
+  <path class="ss-thin" fill="none" stroke="#7a674d" d="M77 239 Q125 252 173 239 M78 277 Q125 289 172 277"/>
+  <path class="ss-thin" fill="none" stroke="#0b0907" d="M95 320 L91 376 M155 320 L159 376"/>
+
+  <!-- female hair side locks -->
+  <path class="female-extra ss-outline" fill="url(#ssHair)" d="M78 105 L58 169 L76 195 L91 146Z"/>
+  <path class="female-extra ss-outline" fill="url(#ssHair)" d="M172 105 L192 169 L174 195 L159 146Z"/>
+</svg>`;
+  }
+  function install(){
+    const n=document.getElementById("creatorNinja");
+    if(!n)return;
+    if(!n.querySelector(".ss-art")) n.innerHTML=artSVG();
+    n.style.setProperty("--hair",window.__ssHairColor||state.creatorHairColor||"#151515");
+  }
+  window.__ssInstallCharacterArt=install;
+  const oldRender=window.renderCreator;
+  window.renderCreator=function(){
+    if(oldRender)oldRender();
+    install();
+  };
+  const oldCreator=window.characterCreator;
+  if(oldCreator){
+    window.characterCreator=function(){
+      oldCreator();
+      setTimeout(install,0);
+    };
+  }
+  setTimeout(install,0);
+})();
+</script></body>
 </html>
