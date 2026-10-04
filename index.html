@@ -338,7 +338,148 @@ h2,h3{font-family:Georgia,"Times New Roman",serif!important;color:#e8ca8d!import
   .preview-ninja{transform:scale(.78)!important;margin-bottom:-18px!important}
   .character-stage{min-height:390px!important}
 }
-</style></head>
+</style>
+<style id="sasuke-inspired-character-pass">
+/* === DARK RIVAL / UCHIHA-INSPIRED CHARACTER PASS === */
+.preview-ninja{
+  --skin:#f0c7ad;
+  --hair:#101216;
+  --cloth:#15171c;
+  --scarf:#30343c;
+  width:250px!important;
+  height:430px!important;
+  filter:drop-shadow(0 18px 12px rgba(0,0,0,.55));
+}
+.preview-ninja .head{
+  width:106px!important;
+  height:112px!important;
+  top:48px!important;
+  border-radius:48% 48% 45% 45%!important;
+  background:linear-gradient(135deg,#f7d8c0 0%,#eab99e 72%,#c98e78 100%)!important;
+  box-shadow:inset -10px -8px 0 rgba(125,67,59,.12),0 7px 0 rgba(0,0,0,.22);
+}
+.preview-ninja .hair{
+  width:136px!important;
+  height:112px!important;
+  top:23px!important;
+  left:57px!important;
+  background:var(--hair)!important;
+  border-radius:54% 58% 38% 42%!important;
+  clip-path:polygon(0 42%,8% 25%,20% 35%,29% 4%,40% 27%,53% 0,61% 25%,76% 8%,79% 31%,96% 19%,88% 51%,100% 63%,81% 67%,76% 93%,61% 67%,49% 100%,40% 70%,28% 91%,22% 66%,7% 78%,13% 57%);
+  box-shadow:inset 18px 8px 0 rgba(255,255,255,.035),0 10px 15px rgba(0,0,0,.35);
+}
+.preview-ninja .hair:after{
+  content:"";
+  position:absolute;
+  left:43px;
+  top:8px;
+  width:34px;
+  height:76px;
+  background:linear-gradient(145deg,rgba(255,255,255,.18),transparent 60%);
+  clip-path:polygon(50% 0,100% 12%,67% 100%,42% 74%,0 100%,29% 28%);
+}
+.preview-ninja .band{
+  top:85px!important;
+  width:111px!important;
+  height:14px!important;
+  background:linear-gradient(#343943,#15181e)!important;
+  border:1px solid #0b0c0f!important;
+  box-shadow:0 2px 0 rgba(255,255,255,.08);
+}
+.preview-ninja .face:before{
+  width:13px!important;
+  height:5px!important;
+  left:26px!important;
+  top:104px!important;
+  background:#11131a!important;
+  border-radius:50%!important;
+  box-shadow:43px 0 0 #11131a!important;
+  transform:rotate(-8deg);
+}
+.preview-ninja .face:after{
+  content:"";
+  position:absolute;
+  left:47px;
+  top:108px;
+  width:13px;
+  height:22px;
+  border-left:2px solid rgba(90,53,47,.45);
+  transform:skew(-12deg);
+}
+.preview-ninja .body{
+  top:157px!important;
+  width:128px!important;
+  height:145px!important;
+  left:61px!important;
+  border-radius:22px 22px 13px 13px!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,.08),transparent 18%,transparent 78%,rgba(0,0,0,.3)),
+    linear-gradient(180deg,#30343d,#111319 78%)!important;
+  border:1px solid #08090c!important;
+  box-shadow:inset 0 0 0 6px rgba(0,0,0,.12),0 12px 20px rgba(0,0,0,.3);
+}
+.preview-ninja .body:before{
+  content:"";
+  position:absolute;
+  left:16px;
+  top:18px;
+  width:96px;
+  height:5px;
+  background:linear-gradient(90deg,transparent,#6c7078,transparent);
+  opacity:.45;
+}
+.preview-ninja .scarf{
+  top:143px!important;
+  left:66px!important;
+  width:118px!important;
+  height:24px!important;
+  background:linear-gradient(180deg,#454b56,#191c22)!important;
+  clip-path:polygon(0 0,100% 0,91% 100%,69% 72%,46% 100%,21% 72%);
+  box-shadow:0 5px 8px rgba(0,0,0,.3);
+}
+.preview-ninja .arm{
+  top:173px!important;
+  width:35px!important;
+  height:127px!important;
+  background:linear-gradient(90deg,#111319,#363a43,#101116)!important;
+  border-radius:18px!important;
+}
+.preview-ninja .arm.left{left:37px!important;transform:rotate(7deg)!important}
+.preview-ninja .arm.right{right:37px!important;transform:rotate(-7deg)!important}
+.preview-ninja .legs{
+  top:292px!important;
+}
+.preview-ninja .leg{
+  width:48px!important;
+  height:118px!important;
+  background:linear-gradient(90deg,#0d0f13,#292d35,#0a0b0e)!important;
+  border-radius:12px 12px 8px 8px!important;
+}
+.preview-ninja .leg.left{transform:rotate(3deg)!important}
+.preview-ninja .leg.right{transform:rotate(-3deg)!important}
+.preview-ninja .eye{
+  width:25px!important;
+  height:12px!important;
+  top:101px!important;
+  background:#f7f2ee!important;
+  border-radius:55% 45% 50% 50%!important;
+  box-shadow:0 1px 0 #111, inset 0 -3px 0 #b7c2d5!important;
+}
+.preview-ninja .eye:after{
+  width:7px!important;
+  height:7px!important;
+  background:#171b28!important;
+  border-radius:50%!important;
+  box-shadow:0 0 0 2px #4b566d!important;
+}
+.preview-ninja .eye.left{left:23px!important;transform:rotate(-8deg)}
+.preview-ninja .eye.right{right:23px!important;transform:rotate(8deg)}
+.preview-ninja.female .hair{height:132px!important}
+.preview-ninja.female .body{border-radius:25px 25px 15px 15px!important}
+.preview-ninja.young .head{transform:scale(.9)!important}
+.preview-ninja.young .hair{transform:scale(.9)!important}
+</style>
+</head>
 <body>
 
 <div id="startScreen">
