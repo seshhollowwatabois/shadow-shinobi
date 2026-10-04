@@ -729,5 +729,27 @@ stopAnimation();
   };
 })();
 </script>
-</body>
+<script>
+(function(){
+  function wireCreator(){
+    if(!document.getElementById("creatorNinja")) return;
+    window.creatorGender=function(g){state.gender=g; characterCreator();};
+    window.creatorHair=function(h){state.hair=h; characterCreator();};
+    window.creatorOutfit=function(o){state.outfit=o; characterCreator();};
+    window.creatorHairColor=function(col){state.creatorHairColor=col; characterCreator();};
+    window.finishCreator=function(){
+      const input=document.getElementById("creatorName");
+      if(input && input.value.trim()) state.name=input.value.trim();
+      save(); home();
+    };
+  }
+  const originalCharacterCreator=window.characterCreator;
+  if(originalCharacterCreator){
+    window.characterCreator=function(){
+      originalCharacterCreator();
+      setTimeout(wireCreator,0);
+    };
+  }
+})();
+</script></body>
 </html>
