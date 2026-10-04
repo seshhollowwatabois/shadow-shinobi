@@ -479,7 +479,109 @@ h2,h3{font-family:Georgia,"Times New Roman",serif!important;color:#e8ca8d!import
 .preview-ninja.young .head{transform:scale(.9)!important}
 .preview-ninja.young .hair{transform:scale(.9)!important}
 </style>
-</head>
+<style id="ninja-saga-inspired-character">
+/* === CHIBI BROWSER-NINJA CHARACTER PASS ===
+   Original art direction inspired by the proportions and readability of
+   late-2000s anime browser RPG avatars — not copied artwork/assets.
+*/
+.character-stage{
+  align-items:flex-end!important;
+  background:
+    radial-gradient(circle at 50% 28%,#72563a 0,#3b2a1b 42%,#171008 78%,#090604 100%)!important;
+}
+.preview-ninja{
+  width:250px!important;height:390px!important;
+  transform:none!important;
+  filter:drop-shadow(0 14px 4px #000)!important;
+}
+/* compact chibi body */
+.preview-ninja .legs{
+  left:79px!important;bottom:10px!important;width:92px!important;height:92px!important;
+  background:linear-gradient(90deg,#12100e 0 42%,#28231d 43% 57%,#12100e 58%)!important;
+  clip-path:none!important;border:0!important;border-radius:0 0 18px 18px!important;
+}
+.preview-ninja .body{
+  left:51px!important;bottom:82px!important;width:148px!important;height:145px!important;
+  border:4px solid #0c0907!important;border-radius:38px 38px 18px 18px!important;
+  clip-path:none!important;
+  background:linear-gradient(110deg,#111 0 14%,var(--cloth,#272727) 15% 82%,#15120f 83%)!important;
+  box-shadow:inset 7px 0 #ffffff12,inset -8px 0 #0008,0 5px 0 #080604!important;
+}
+.preview-ninja .body:before{
+  left:50%!important;top:0!important;width:5px!important;height:120px!important;
+  background:#0b0907!important;transform:none!important;opacity:.75!important;
+}
+.preview-ninja .belt{
+  left:45px!important;bottom:133px!important;width:160px!important;height:22px!important;
+  border:3px solid #9c763d!important;border-radius:3px!important;
+}
+/* big rounded head = the important Ninja Saga-like silhouette */
+.preview-ninja .head{
+  left:47px!important;bottom:205px!important;width:156px!important;height:145px!important;
+  border:5px solid #17100c!important;border-radius:48% 48% 45% 45%!important;
+  background:linear-gradient(145deg,#efbd91 0,#d89a73 55%,#ae6e55 100%)!important;
+  box-shadow:inset -10px -7px #9f634d!important;
+}
+.preview-ninja .head:after{
+  left:16px!important;top:24px!important;width:36px!important;height:55px!important;
+  border-left:5px solid #ffd1a8!important;opacity:.45!important;
+}
+/* chunky spiky hair */
+.preview-ninja .hair{
+  left:40px!important;bottom:303px!important;width:170px!important;height:105px!important;
+  border-radius:48% 48% 35% 35%!important;
+  background:var(--hair,#151515)!important;
+  clip-path:polygon(0 78%,3% 36%,14% 40%,10% 7%,28% 24%,35% 0,47% 22%,57% 2%,68% 24%,82% 5%,79% 31%,100% 22%,95% 53%,100% 75%,82% 61%,72% 87%,57% 65%,44% 92%,30% 65%,17% 88%)!important;
+  filter:drop-shadow(2px 3px #080604)!important;
+}
+.preview-ninja .hair:after{
+  content:""!important;position:absolute!important;inset:8px!important;
+  background:linear-gradient(115deg,#ffffff24 0 9%,transparent 10% 46%,#ffffff16 47% 53%,transparent 54%)!important;
+  clip-path:polygon(0 0,100% 0,100% 65%,72% 45%,50% 76%,27% 42%,0 70%)!important;
+}
+/* forehead protector */
+.preview-ninja .band{
+  left:43px!important;bottom:278px!important;width:164px!important;height:31px!important;
+  border:4px solid #090705!important;border-radius:3px!important;
+  background:linear-gradient(#333,#101010)!important;z-index:10!important;
+}
+.preview-ninja .band:after{
+  content:"✦"!important;left:50%!important;top:0!important;
+  transform:translateX(-50%)!important;color:#d8b56d!important;font-size:17px!important;
+}
+/* oversized simple anime eyes */
+.preview-ninja .face{
+  left:72px!important;bottom:232px!important;width:106px!important;height:58px!important;
+}
+.preview-ninja .face:before,.preview-ninja .face:after{
+  top:14px!important;width:34px!important;height:19px!important;
+  background:#fff!important;border:3px solid #17100c!important;
+  border-radius:55% 45% 55% 45%!important;
+  box-shadow:inset 0 -5px #765040!important;
+}
+.preview-ninja .face:before{left:1px!important}.preview-ninja .face:after{right:1px!important}
+.preview-ninja .scarf{
+  left:49px!important;bottom:193px!important;width:152px!important;height:43px!important;
+  border:4px solid #0c0907!important;border-radius:0 0 18px 18px!important;
+  clip-path:polygon(0 0,100% 0,89% 100%,67% 68%,47% 100%,27% 70%)!important;
+}
+/* short chunky arms */
+.preview-ninja .arm{
+  bottom:91px!important;width:43px!important;height:118px!important;
+  border:4px solid #111!important;border-radius:22px!important;
+  background:linear-gradient(90deg,#111,var(--cloth,#272727) 35% 65%,#111)!important;
+}
+.preview-ninja .arm.left{left:27px!important;transform:rotate(18deg)!important}
+.preview-ninja .arm.right{right:27px!important;transform:rotate(-18deg)!important}
+.preview-ninja.female .body{border-radius:44px 44px 18px 18px!important}
+.preview-ninja.female .hair{height:118px!important}
+.preview-ninja.young .head{transform:scale(.9)!important}
+.preview-ninja.young .hair{transform:scale(.9)!important}
+@media(max-width:700px){
+  .character-stage{min-height:380px!important}
+  .preview-ninja{transform:scale(.78)!important;transform-origin:bottom center!important;margin-bottom:-5px!important}
+}
+</style></head>
 <body>
 
 <div id="startScreen">
